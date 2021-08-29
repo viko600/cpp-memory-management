@@ -38,7 +38,7 @@ private:
 public:
     // constructor / destructor
     ChatLogic();
-    ~ChatLogic();
+    ~ChatLogic(); //Cannot remove the delete operator but it isnt used
 
     // getter / setter
     void SetPanelDialogHandle(ChatBotPanelDialog *panelDialog);

@@ -12,7 +12,7 @@ class ChatBot
 {
 private:
     // data handles (owned)
-    wxBitmap* _image; // avatar image
+    wxBitmap* _image; // avatar image. Not sure if this can be defined as a shared pointer.
 
     // data handles (not owned)
     GraphNode *_currentNode;
