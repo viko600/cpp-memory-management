@@ -2,6 +2,7 @@
 #include <random>
 #include <algorithm>
 #include <ctime>
+#include <memory>
 
 #include "chatlogic.h"
 #include "graphnode.h"
@@ -33,17 +34,62 @@ ChatBot::ChatBot(std::string filename)
 ChatBot::~ChatBot()
 {
     std::cout << "ChatBot Destructor" << std::endl;
-
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
-        delete _image;
+      	delete _image;
         _image = NULL;
     }
 }
 
 //// STUDENT CODE
 ////
+
+ChatBot::ChatBot(const ChatBot &source){
+	this->_image = source._image;
+  	this->_currentNode = source._currentNode;
+    this->_rootNode = source._rootNode;
+    this->_chatLogic = source._chatLogic;
+}
+
+ChatBot& ChatBot::operator=(const ChatBot &source){
+  if (this != &source){
+    ChatBot(source);
+  }
+  return *this;
+}
+
+ChatBot::ChatBot(ChatBot &&source){
+  std::cout << "Move const" << std::endl;
+  this->_image = source._image;
+  this->_currentNode = source._currentNode;
+  this->_rootNode = source._rootNode;
+  this->_chatLogic = source._chatLogic;
+  this->_chatLogic->SetChatbotHandle(this);
+  
+  source._image = nullptr; 
+  source._currentNode = nullptr;
+  source._rootNode = nullptr;
+  source._chatLogic = nullptr;
+}
+
+ChatBot& ChatBot:: operator=(ChatBot &&source){
+  std::cout << "Move assign" << std::endl;
+  if (this != &source){
+    delete _image;
+    this->_image = source._image;
+    this->_currentNode = source._currentNode;
+    this->_rootNode = source._rootNode;
+    this->_chatLogic = source._chatLogic;
+    this->_chatLogic->SetChatbotHandle(this);
+    
+    source._image = nullptr; 
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._chatLogic = nullptr;
+  }
+  return *this;
+}
 
 ////
 //// EOF STUDENT CODE
@@ -86,6 +132,7 @@ void ChatBot::SetCurrentNode(GraphNode *node)
 {
     // update pointer to current node
     _currentNode = node;
+
 
     // select a random node answer (if several answers should exist)
     std::vector<std::string> answers = _currentNode->GetAnswers();
