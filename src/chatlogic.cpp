@@ -17,11 +17,7 @@ ChatLogic::ChatLogic()
     //// STUDENT CODE
     ////
 
-    // create instance of chatbot
-    _chatBot = new ChatBot("../images/chatbot.png");
-
-    // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot->SetChatLogicHandle(this);
+    // Instance of ChatBot removed from the def constructure.
 
     ////
     //// EOF STUDENT CODE
@@ -148,7 +144,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(childToken->second); });
 
                             // create new edge
-                            auto edge = std::make_unique<GraphEdge>(id);
+                            std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
                             edge->SetChildNode((*childNode).get());
                             edge->SetParentNode((*parentNode).get());
 
@@ -193,7 +189,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
             if (rootNode == nullptr)
             {
-                rootNode = (*it).get(); // assign current node to root
+                rootNode = std::move((*it).get()); // mving the current node to the root node
             }
             else
             {
