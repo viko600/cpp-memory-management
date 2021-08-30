@@ -46,6 +46,7 @@ ChatBot::~ChatBot()
 ////
 
 ChatBot::ChatBot(const ChatBot &source){
+    _image = new wxBitmap();
 	*_image = *source._image;
   	_currentNode = source._currentNode;
     _rootNode = source._rootNode;
@@ -54,6 +55,7 @@ ChatBot::ChatBot(const ChatBot &source){
 
 ChatBot& ChatBot::operator=(const ChatBot &source){
   if (this != &source){
+    _image = new wxBitmap();
     *_image = *source._image;
   	_currentNode = source._currentNode;
     _rootNode = source._rootNode;
